@@ -22,6 +22,10 @@ var/
 .installed.cfg
 *.egg
 
+# Python
+*.pyc
+*.pyo
+
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
