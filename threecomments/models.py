@@ -17,15 +17,15 @@ class Comment(models.Model):
         if not self.pk:
             if not self.parent:
                 super(Comment, self).save(*args, **kwargs)
-                Comment.objects.filter(id=self.id).update(tree_id=self.id)
+                self.__class__.objects.filter(id=self.id).update(tree_id=self.id)
             else:
                 self.tree_id = self.parent.tree_id
                 self.lft = self.parent.rght
                 self.rght = self.parent.rght + 1
                 self.level = self.parent.level + 1
-                Comment.objects.filter(tree_id=self.parent.tree_id, lft__gt=self.lft).update(lft=models.F('lft')+2)
-                Comment.objects.filter(tree_id=self.parent.tree_id, rght__gte=self.rght).update(rght=models.F('rght')+2)
-                Comment.objects.filter(id = self.parent.id).update(rght=models.F('rght')+2)
+                self.__class__.objects.filter(tree_id=self.parent.tree_id, lft__gt=self.lft).update(lft=models.F('lft')+2)
+                self.__class__.objects.filter(tree_id=self.parent.tree_id, rght__gte=self.rght).update(rght=models.F('rght')+2)
+                self.__class__.objects.filter(id = self.parent.id).update(rght=models.F('rght')+2)
                 super(Comment, self).save(*args, **kwargs)
         else:
             super(Comment, self).save(*args, **kwargs)

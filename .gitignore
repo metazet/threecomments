@@ -57,4 +57,4 @@ coverage.xml
 docs/_build/
 
 # Other stuff:
-.idea
+/.idea
