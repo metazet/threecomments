@@ -1,10 +1,10 @@
 # coding: utf-8
 from django import forms
-from django.conf import settings
 from django.utils.text import get_text_list
 from django.utils.translation import ungettext, ugettext, ugettext_lazy as _
 
 from threecomments.models import Comment
+from threecomments.app_settings import THREECOMMENTS_ALLOW_PROFANITIES, THREECOMMENTS_PROFANITIES_LIST
 
 
 class CommentForm(forms.ModelForm):
@@ -17,8 +17,8 @@ class CommentForm(forms.ModelForm):
         contain anything in PROFANITIES_LIST.
         """
         comment = self.cleaned_data["comment"]
-        if settings.COMMENTS_ALLOW_PROFANITIES == False:
-            bad_words = [w for w in settings.PROFANITIES_LIST if w in comment.lower()]
+        if not THREECOMMENTS_ALLOW_PROFANITIES:
+            bad_words = [w for w in THREECOMMENTS_PROFANITIES_LIST if w in comment.lower()]
             if bad_words:
                 raise forms.ValidationError(ungettext(
                     "Watch your mouth! The word %s is not allowed here.",
